@@ -13,6 +13,24 @@ e.g
 Input: nums = [2,3,1,1,4]
 Output: 2
 Explanation: The minimum number of jumps to reach the last index is 2.
-            Jump 1 step from index 0 to 1, then 3 steps to the last index.i
-            
+            Jump 1 step from index 0 to 1, then 3 steps to the last index.
+
 '''
+
+class Solution:
+    def jump(self, nums):
+        def backtrack(count, idx, m):
+            if m and idx == len(nums):
+                return min(m, idx)
+            elif not m and idx == len(nums):
+                return idx
+            else:
+                for i in range(idx, len(nums)):
+                    for j in range(1, nums[i]+1):
+                        backtrack(count + j, i+1, m)
+
+        r = backtrack(0,0, len(nums))
+        return r
+
+if __name__ == '__main__':
+    print(Solution().jump([2,3,1,1,4]))
