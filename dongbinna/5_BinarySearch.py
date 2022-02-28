@@ -1,4 +1,8 @@
 '''
+
+나동빈 이코테 2021 강의 몰아보기
+https://www.youtube.com/watch?v=2zjoKjt97vQ&list=PLRx0vPvlEmdAghTr5mXQxGpHjWqSz0dgC&index=3
+
 [Binary Search] 이진 탐색
 정렬되어 있는 리스트에서 탐색 범위를 절반씩 좁혀가며 데이터를 탐색하는 방법
 시작점, 끝점, 중간점을 이용하여 탐색 범위를 설정함

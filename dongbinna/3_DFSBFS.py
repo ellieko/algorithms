@@ -1,4 +1,8 @@
 '''
+
+나동빈 이코테 2021 강의 몰아보기
+https://www.youtube.com/watch?v=2zjoKjt97vQ&list=PLRx0vPvlEmdAghTr5mXQxGpHjWqSz0dgC&index=3
+
 --- Depth First Search (깊이 우선 탐색) ---
 그래프에서 깊은 부분을 우선적으로 탐색하는 알고리즘
 스택 자료구조(혹은 재귀 함수)를 이용

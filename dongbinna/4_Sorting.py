@@ -1,4 +1,8 @@
 '''
+
+나동빈 이코테 2021 강의 몰아보기
+https://www.youtube.com/watch?v=2zjoKjt97vQ&list=PLRx0vPvlEmdAghTr5mXQxGpHjWqSz0dgC&index=3
+
 [Selection Sort]
 처리되지 않은 데이터 중에서 가장 작은 데이터를 선택해
 맨 앞에 있는 데이터와 바꾸는 것을 반복
