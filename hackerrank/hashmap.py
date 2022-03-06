@@ -124,13 +124,19 @@ def freqQuery(queries):
                 ans.append(0)
     return ans
 
-# take-away
-# 1) Counter, defaultdict
+# IMPORTANT TAKE AWAY
+# 1) from collections import Counter, defaultdict
+#    Counter: use for counting purpose dictonaries, default value = 0
+#    defaultdict: use for dictionaries when want to set default values
+#                 defaultdict(int) -> default: 0
+#                 defaultdict(set) -> default: set()
+#                 defaultdict(lambda: "Not Present") ...
 # 2) The discard() method removes the specified item from the set
 #    This method is different from the remove() method,
 #    because the remove() method will raise an error if the specified item does not exist, and the discard() method will not.
-# 3) generator, yield
+# 3) generator, yield (not taking up memory, substitue of array return, ...)
 # 4) how easily dictionary can be modified (doesn't have to reassign the value with get, ...)
+#    e.g. d = {1: [1,2,3]}, d[1].append(100) -> d = {1: [1,2,3,100]}
 
 def freqQuery_v2(queries):
     from collections import Counter, defaultdict
