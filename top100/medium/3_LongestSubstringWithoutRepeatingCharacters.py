@@ -1,4 +1,7 @@
 '''
+3. Longest Substring without Repeating Characters
+https://leetcode.com/problems/longest-substring-without-repeating-characters/solution/
+
 Given a string s, find the length of the longest substring without repeating characters.
 
 e.g.
@@ -7,44 +10,78 @@ Output: 3
 Explanation: The answer is "wke", with the length of 3.
 Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
 
+s consists of English letters, digits, symbols and spaces.
+
 '''
 
 
 class Solution:
 
-    # Runtime: 2851 ms (time complexitiy: O(n^2))
-    def lengthOfLongestSubstring(self, s: str) -> int:
-        maxlen = 0
-        if len(s) <= 1:
-            return len(s)
-        for i in range(len(s)-1):
-            l = 1
-            storage = [s[i]]
-            for j in range(i+1, len(s)):
-                elem = s[j]
-                if elem in storage:
-                    break
-                else:
-                    l += 1
-                    storage.append(elem)
-            if l > maxlen:
-                maxlen = l
-        return maxlen
-
-    # Runtime: 99 ms (time complexity: O(n))
+    # time complexity: O(n^2)
+    # space complexity: O(n)
     def lengthOfLongestSubstring_v2(self, s: str) -> int:
-        chars = [None] * 128
-        left = right = 0
-        res = 0
-        while right < len(s):
-            r = s[right]
-            index = chars[ord(r)]
-            if index != None and index >= left and index < right:
-                left = index + 1
-            res = max(res, right - left + 1)
-            chars[ord(r)] = right
-            right += 1
+        res = 0         # our answer (maximum length)
+        seen = {}       # if char was seen during ith iterationn
+
+        # fix start (where substring begins)
+        for i,c1 in enumerate(s):
+            seen[c1] = i
+            length = 1
+            # go further until meet already visited character
+            for c2 in s[i+1:]:
+                if c2 in seen and seen[c2] == i:
+                    break
+                seen[c2] = i
+                length += 1
+            # update our answer, maximum length
+            res = max(res, length)
         return res
+
+    # slide window tech
+    # time complexity: O(N)
+    # space complexity: O(N)
+    def lengthOfLongestSubstring_v3(self, s: str) -> int:
+        l = max_len = 0
+        chars = set()
+        for r,elem in enumerate(s):
+
+            # shrink window until it doesn't have repeating character
+            while elem in chars:
+                elem.remove(s[l])
+                l += 1
+
+            chars.add(elem)
+            max_len = max(r - l + 1, max_len)
+
+        return max_len
+
+    # s consists of English letters, digits, symbols and spaces.
+    # make a list of None, a length of 128
+    # value of ord of lower, upper English characters, digits, symbols and spaces
+    # if the value was new, we put there index of the found position in s
+    def lengthOfLongestSubstring_v4(self, s: str) -> int:
+        return      
+        # chars = [None] * 128
+        # left = right = 0
+        # while right < len(s):
+        #     r = s[right]
+        #     idx = chars[ord(r)]
+        #     if idx != None and left
+
+    def lengthOfLongestSubstring_v5(self, s: str) -> int:
+        dicts = {}
+        maxlength = start = 0
+        for i,value in enumerate(s):
+            if value in dicts:
+                sums = dicts[value] + 1
+                if sums > start:
+                    start = sums
+            num = i - start + 1
+            if num > maxlength:
+                maxlength = num
+            dicts[value] = i
+        return maxlength
+
 
 if __name__ == '__main__':
     print(Solution().lengthOfLongestSubstring('abcadbc'))
