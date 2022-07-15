@@ -62,6 +62,8 @@ class Solution:
             return list2
 
     # iterative way - Runtime: 36 ms
+    # runtime complexity: O(N+M)
+    # space complexity: O(1)
     def mergeTwoLists_v3(self, list1, list2):
         prehead = ListNode(-1)
         prev = prehead
