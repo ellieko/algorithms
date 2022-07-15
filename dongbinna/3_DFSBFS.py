@@ -1,7 +1,7 @@
 '''
 
 나동빈 이코테 2021 강의 몰아보기
-https://www.youtube.com/watch?v=2zjoKjt97vQ&list=PLRx0vPvlEmdAghTr5mXQxGpHjWqSz0dgC&index=3
+https://www.youtube.com/watch?v=7C9RgOcvkvo&list=PLRx0vPvlEmdAghTr5mXQxGpHjWqSz0dgC&index=3
 
 --- Depth First Search (깊이 우선 탐색) ---
 그래프에서 깊은 부분을 우선적으로 탐색하는 알고리즘
@@ -41,7 +41,7 @@ def dfs(graph, v, visited):
 
 '''
 --- Breadth First Search (너비 우선 탐색) ---
-그래프ㅡ에서 가까운 노드부터 우선적으로 탐색하는 알고리즘
+그래프에서 가까운 노드부터 우선적으로 탐색하는 알고리즘
 큐 자료구조를 이용
 1) 탐색 시작 노드를 큐에 삽입하고 방문 처리
 2) 큐에서 노드를 꺼낸 뒤에 해당 노드의 인접 노드 중에서
@@ -148,6 +148,15 @@ def escape_maze(arr, x, y):
     for i in range(n):
         print(arr[i])
     return(arr[n-1][m-1])
+
+
+# 유클리드 호제법
+# 두 자연수 a, b에 대하여 (a > b) a를 b로 나눈 나머지를 r이라고 할 때
+# a와 b의 최대 공약수는 b와 r의 최대 공약수와 같다
+def gcd(a,b):
+    if a%b == 0:
+        return b
+    return gcd(b, a%b) 
 
 if __name__ == '__main__':
     print("Result of Depth-First Search")
