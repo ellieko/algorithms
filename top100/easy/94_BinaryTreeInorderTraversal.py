@@ -15,7 +15,8 @@ class Solution:
     # recursive way
     # Time complexity: O(n)
     # because the recursive function is T(n) = 2 T(n/2) + 1
-    def inorderTraversal(self, root):
+    # Space complexity: O(n)
+    def inorderTraversal_v1(self, root):
         ans, node = [], root
         if not node:
             return []
@@ -25,10 +26,21 @@ class Solution:
         if node.right:
             ans.extend(self.inorderTraversal(node.right))
         return ans
+    
+    def inorderTraversal_v2(self, root):
+        def helper(node, ans):
+            if node:
+                helper(node.left)
+                ans.append(node.val)
+                helper(node.right)
+        ans = []
+        helper(root, ans)
+        return ans
 
     # iterative way -- using stack!
     # Time complexity: O(n)
-    def inorderTraversal_v2(self, root):
+    # Space complexity: O(n)
+    def inorderTraversal_v3(self, root):
         ans, stack = [], []
         curr = root
 
@@ -42,5 +54,3 @@ class Solution:
             # if curr doesnt have right node, it will pop the parent node from the stack
             curr = curr.right
         return ans
-
-    # using Morris traversal
