@@ -53,7 +53,7 @@ class Solution:
 
     # what if it has multiple solutions
     # and want to bring out all of them but not duplicates
-    # 
+
     # [3,3,0,6], 6) --> [[0,1], [2,3]]
     def twoSum_application(self, nums, target):
         hash = {}
