@@ -1,4 +1,7 @@
 '''
+11. Container With Most Water
+https://leetcode.com/problems/container-with-most-water/
+
 You are given an integer array height of length n.
 There are n vertical lines drawn such that the two endpoints of the ith line
 are (i, 0) and (i, height[i]).
@@ -16,7 +19,7 @@ Notice that you may not slant the container.
 class Solution:
 
     # Brute Force: Time limit excedded - O(n^2)
-    def maxArea(self, height):
+    def maxArea_v1(self, height):
         l = len(height)
         ans = 0
         for i in range(l-1):
@@ -26,8 +29,10 @@ class Solution:
                     ans = temp
         return ans
 
-    # O(n)
-    def maxArea(self, height):
+    # max area will be made with biggest width or biggest height 
+    # time complexity: O(n)
+    # space complexity: O(1)
+    def maxArea_v2(self, height):
         maxarea, l, r = 0, 0, len(height) - 1
         while (l < r):
             maxarea = max(maxarea, (r-l)* min(height[l], height[r]))
@@ -38,4 +43,4 @@ class Solution:
         return maxarea
 
 if __name__ == '__main__':
-    Solution().maxArea([])
+    print(Solution().maxArea_v1([2,3,4,5,18,17,6]))
