@@ -1,5 +1,6 @@
 '''
 121. Best Time to Buy and Sell Stock
+https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
 
 You are given an array prices where prices[i] is the price of a given stock on the ith day.
 
@@ -16,8 +17,20 @@ If you cannot achieve any profit, return 0.
 '''
 
 class Solution:
-    # approach 1) Brute Force --> Time Limit Exceeded
+    # sliding window
+    # time complexity: O(n)
+    # space complexity: O(1)
     def maxProfit(self, prices) -> int:
+        profit = 0    
+        l = 0
+        for r in range(1, len(prices)):
+            if prices[l] > prices[r]:
+                l = r                   # found smaller price to buy stock
+            profit = max(profit, prices[r]-prices[l])
+        return profit
+
+    # approach 1) Brute Force --> Time Limit Exceeded
+    def maxProfit_v1(self, prices) -> int:
         profit = 0
         for i in range(len(prices)-1):
             temp = max(prices[i+1:]) - prices[i]
