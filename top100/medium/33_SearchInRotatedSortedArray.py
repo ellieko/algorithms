@@ -1,4 +1,6 @@
 '''
+33. Search in Rotated Sorted Array
+https://leetcode.com/problems/search-in-rotated-sorted-array/
 
 There is an integer array nums sorted in ascending order (with distinct values).
 
@@ -24,7 +26,37 @@ Output: -1
 '''
 
 class Solution:
-    def search(self, nums, target):
+
+    # time complexity: O(logn)
+    # space complexity: O(1)
+    def search(self, nums, target: int) -> int:
+        lo, hi = 0, len(nums)-1
+        
+        while lo <= hi:
+            mid = (lo+hi)//2
+            if nums[mid] == target:
+                return mid
+            
+            # left-sorted portion
+            # if target is smaller than nums[mid]
+            # it can be even smaller than nums[left] or not
+            elif nums[lo] <= nums[mid]:     # ascending   
+                if target < nums[lo] or target > nums[mid]:
+                    lo = mid + 1
+                else: # when the target is smaller than nums[mid] but than nums[0]
+                    hi = mid - 1
+                    
+            # right-sorted portion
+            # if target is greater than nums[mid]
+            # it can be even greater than the last indexed element or not
+            else:
+                if target > nums[hi] or target < nums[mid]:
+                    hi = mid - 1
+                else: # when it's greater than nums[mid] but less than nums[-1]
+                    lo = mid + 1
+        return -1
+
+    def search_v1(self, nums, target):
         
         idx = 0 
         while idx < len(nums)-1 and nums[idx] < nums[idx+1]:
