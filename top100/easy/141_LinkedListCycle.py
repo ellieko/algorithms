@@ -18,7 +18,6 @@ Output: true
 
 
 # Definition for singly-linked list.
-from typing import Optional
 
 class ListNode:
     def __init__(self, x, n = None):
@@ -30,7 +29,7 @@ class ListNode:
 class Solution:
     # approach 1) simply check if node is already in list
     # time and space complexity: O(n)
-    def hasCycle(self, head: Optional[ListNode]) -> bool:
+    def hasCycle(self, head) -> bool:
         history = set()
         while head:
             if head in history:
@@ -39,11 +38,11 @@ class Solution:
             head = head.next
         return False
 
-    # approcah 2) slow and fast
+    # approcah 2) slow and fast (Floyd's Cycle Finding Algorithm)
     # time complexity: O(n), space complexity: O(1)
     # if slow and fast (pointers) meet each other again --> cycle
     # else fast will hit null --> no cycle
-    def hasCycle_v2(self, head: Optional[ListNode]) -> bool:
+    def hasCycle_v2(self, head) -> bool:
         slow, fast = head, head
         while fast and fast.next:
             slow = slow.next        # possible because we check fast != null

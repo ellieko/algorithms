@@ -1,6 +1,8 @@
 '''
+19. Remove Nth Node From End of List
 
 Given the head of a linked list, remove the nth node from the end of the list and return its head.
+https://leetcode.com/problems/remove-nth-node-from-end-of-list/
 
 e.g.
 Input: head = [1,2,3,4,5], n = 2
@@ -15,56 +17,40 @@ class ListNode:
         self.next = next
 
 class Solution:
-    # my first not pretty solution - use dummy node to resolve the first node!!
-    def removeNthFromEnd(self, head, n):
-        d, l = [], 0
-        node = head
-        while node:
-            d.append(node)
-            l += 1
-            node = node.next
-        if l - n == 0:
-            head = head.next
-            return head
-        node, index = head, 1
-        while index < l - n :
-            node = node.next
-            index += 1
-        if node.next:
-            node.next = node.next.next
-        else:
-            node.next = None
-        return head
-
-    # modified one, using "dummy node" (approach is the same)
-    def removeNthFromEnd_v2(self, head, n):
-        dummy = ListNode(0, head)
-        node = head
+    # Two Pass
+    # time complexity: O(N)
+    # space complexity: O(1)
+    def removeNthFromEnd_v1(self, head, n):
         length = 0
-        while node:
+        curr = head
+        while curr:
             length += 1
-            node = node.next
-        length -= n
-        node = dummy
-        while length > 0:
-            length -= 1
-            node = node.next
-        node.next = node.next.next
+            curr = curr.next
+        
+        count = length - n
+        dummy = ListNode(-1, head)
+        prev = dummy
+        while count != 0:
+            prev = prev.next
+            count -= 1
+        
+        prev.next = prev.next.next
+    
         return dummy.next
 
-    # another approach, using two pointers
-    def removeNthFromEnd_v3(self, head, n):
-        dummy = ListNode(0, head)
-        first = second = dummy
+    # One Pass - using two pointers
+    def removeNthFromEnd_v2(self, head, n):
+        dummy = ListNode(-1, head)
+        l = r = dummy
         # advances first pointer first s.t. first and second pointer have n nodes gap
-        for i in range(0, n+1):
-            first = first.next
+        for i in range(n+1):
+            r = r.next
         # move first to the end, maintaining the gap
-        while first:
-            first = first.next
-            second = second.next
-        second.next = second.next.next
+        while r:
+            l, r = l.next, r.next
+        l.next = l.next.next
         return dummy.next
+        
 
 
 if __name__ == '__main__':
