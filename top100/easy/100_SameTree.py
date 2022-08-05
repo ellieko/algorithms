@@ -9,8 +9,6 @@ and the nodes have the same value.
 
 '''
 
-from tkinter import SOLID
-from typing import Optional
 from collections import deque
 
 # Definition for a binary tree node.
@@ -23,46 +21,28 @@ class TreeNode:
 class Solution:
 
     # approach 1) recursion
-    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
-        if not p and not q:     # both are None     --> True
+    # time complexity: O(n)
+    # space complexity: O(n)
+    def isSameTree(self, p, q) -> bool:
+        if not p and not q:     # both are None                             --> True
             return True
-        elif not p or not q:    # only one is None  --> False
-            return False
-        elif p.val != q.val:    # have diff val     --> False
+        elif not p or not q:    # only one is None or they have diff val    --> False
             return False
         return self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right)
 
     # approach 2) iteration
-    def isSameTree_v2(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
-        def check(p, q):
-            if not p and not q:
-                return True
-            elif not p or not q:
-                return False
-            return p.val == q.val
-
-        stack = [(p, q)]
-        while stack:            # while stack is not empty
-            p, q = stack.pop()
-            if not check(p, q):
-                return False
-            if p:
-                stack.append((p.left, q.left))
-                stack.append((p.right, q.right))
-
+    # time complexity: O(n)
+    # space complexity: O(n)
     def isSameTree_v3(self, p, q) -> bool:
         stack = [(p, q)]
         while stack:
             p, q = stack.pop()
             if not p and not q:
                 continue
-            if not p or not q:
-                return False  
-            if p.val == q.val:
-                stack.append((p.left, q.left))
-                stack.append((p.right, q.right))
-            else:
-                return False
+            elif not p or not q or p.val != q.val:
+                return False 
+            stack.append((p.left, q.left))
+            stack.append((p.right, q.right))
         return True
 
 
@@ -72,8 +52,9 @@ class Solution:
     Given the root of a binary tree, check whether it is a mirror of itself
     (i.e., symmetric around its center).
     '''
-
-    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+    # time complexity: O(n)
+    # space complexity: O(n) 
+    def isSymmetric(self, root) -> bool:
         stack = [(root.left, root.right)]
         while stack:
             l, r = stack.pop()

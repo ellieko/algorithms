@@ -17,10 +17,22 @@ class TreeNode:
         self.right = right
 class Solution:
 
+    # time complexity: O(n) since we visit each node exactly once
+    # space complexity: O(n) since we keep up to the entire tree
+    def isValidBST(self, root) -> bool:
+        def validate(node, low, high):
+            if not node:
+                return True
+            if node.val <= low or node.val >= high:
+            # if not (node.val < high and node.val > low):
+                return False
+            return validate(node.left, low, node.val) and validate(node.right, node.val, high)
+        return validate(root, float("-inf"), float("inf"))
+                
+
     # approach 1) Top-down DFS low and high (valid interval)
     # time complexity: O(N) since we visit each node exactly once
     # space complexity: O(N) since we keep up to the entire tree (recursion stack)
-
     def isValidBST_v1(self, root) -> bool:
         return self.validate(root, None, None)
     
@@ -37,7 +49,7 @@ class Solution:
     # approach 2) Inorder Traversal (94. Binary Tree Inorder Traversal)
     # when we do inorder traversal, to satisfy binary search tree, previous elem has to be always smaller
     # time complexity: O(N) since we visit each node exactly once
-    # space complexity: O(N) since we keep up to the entire tree (recursion stack)
+    # space complexity: O(N) since we keep up to the entire tree (recursion stack)l
 
     def isValidBST_v2(self, root) -> bool:
         prev, curr = None, root
