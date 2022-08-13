@@ -1,4 +1,6 @@
 '''
+17. Letter Combinations of a Phone Number
+https://leetcode.com/problems/letter-combinations-of-a-phone-number/
 
 Given a string containing digits from 2-9 inclusive,
 return all possible letter combinations that the number could represent.
@@ -20,24 +22,46 @@ Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
 # and not to the length of the input.
 
 class Solution:
-    def letterCombinations(self, digits):
-        if len(digits) == 0:
-            return []
-        letters = { "2" : "abc", "3" : "def", "4" : "ghi", "5" : "jkl", "6" : "mno", "7" : "pqrs", "8" : "tuv", "9" : "wxyz" }
-    
-        def backtrack(index, path):
-            if len(path) == len(digits):
-                combinations.append("".join(path))
-                return
-            possible_letters = letters[digits[index]]
-            for letter in possible_letters:
-                path.append(letter)
-                backtrack(index+1, path)
-                path.pop()
 
-        combinations = []
-        backtrack(0, [])
-        return combinations
+    # recursion (backtrack)
+    # time complexity: O(4^n) where n is the length of digits
+    # space complexity: O(n) not counting space used for the output,
+    #                   the extra space we use relative to input size is the space occupied by the recursion call stack
+    def letterCombinations_v1(self, digits):
+        res = []
+        digitToChar = { "2" : "abc", "3" : "def", "4" : "ghi", "5" : "jkl",
+                        "6" : "mno", "7" : "pqrs", "8" : "tuv", "9" : "wxyz" }
+    
+        def backtrack(idx, curStr):
+            if idx == len(digits):
+                res.append(curStr)
+                return
+            for c in digitToChar[digits[idx]]:
+                backtrack(idx+1, curStr+c)
+
+        if digits:
+            backtrack(0, "")
+        return res
+
+    # bfs
+    # time complexity: O(4^n) where n is the length of digits
+    # space complexity: O(4^n)
+    def letterCombinations_v2(self, digits):
+        from collections import deque
+        res = []
+        digitToChar = { "2" : "abc", "3" : "def", "4" : "ghi", "5" : "jkl",
+                        "6" : "mno", "7" : "pqrs", "8" : "tuv", "9" : "wxyz" }
+        q = deque([""])
+        while digits and q:
+            s = q.popleft()
+            if len(s) == len(digits):
+                res.append(s)
+            else:
+                for c in digitToChar[digits[len(s)]]:
+                    q.append(s + c)
+        return res
+
+
 
 
 if __name__ == '__main__':

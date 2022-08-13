@@ -1,5 +1,6 @@
 '''
 98. Validate Binary Search Tree
+https://leetcode.com/problems/validate-binary-search-tree/
 
 Given the root of a binary tree, determine if it is a valid binary search tree (BST).
 
@@ -16,7 +17,7 @@ class TreeNode:
         self.left = left
         self.right = right
 class Solution:
-
+    # recursive traversal with interval requirement
     # time complexity: O(n) since we visit each node exactly once
     # space complexity: O(n) since we keep up to the entire tree
     def isValidBST(self, root) -> bool:
@@ -24,7 +25,6 @@ class Solution:
             if not node:
                 return True
             if node.val <= low or node.val >= high:
-            # if not (node.val < high and node.val > low):
                 return False
             return validate(node.left, low, node.val) and validate(node.right, node.val, high)
         return validate(root, float("-inf"), float("inf"))
