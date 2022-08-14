@@ -11,7 +11,7 @@ You may return the answer in any order.
 
 class Solution:
     # my approach - using Counter
-    # time complexity: O(n)
+    # time complexity: O(nlogn)
     # space complexity: O(n)
     def topKFrequent_v1(self, nums, k: int):
         from collections import Counter
@@ -40,20 +40,19 @@ class Solution:
         # pop k elements from heap
         # where higher frequency is prioritized
         c = {}
-        for n in nums:
+        for n in nums: 
             c[n] = c.get(n, 0) + 1
         
-        h = []
+        h = ans = []
         for elem, count in c.items():
             heapq.heappush(h, (-count, elem))
             
-        ans = []
         for i in range(k):
             ans.append(heapq.heappop(h)[1])
         return ans
 
     
-    # better approach - bucket sort
+    # better approach - bucket sort -> good!!!!!
     # with using index for occurrences (counts) and value for a list of elements occurred for the occurrence
     # time complexity: O(n)
     # space complexity: O(n)
@@ -69,7 +68,7 @@ class Solution:
         for elem, count in c.items():
             freq_to_elems[count].append(elem)
 
-        # make res to retuen
+        # make res to return
         res = []
         for i in range(len(freq_to_elems)-1, 0, -1):
             for elem in freq_to_elems[i]:
@@ -78,3 +77,5 @@ class Solution:
                     return res
 
 
+if __name__ == '__main__':
+    print(Solution().topKFrequent_v3([1,1,1,2,2,3], 2))
