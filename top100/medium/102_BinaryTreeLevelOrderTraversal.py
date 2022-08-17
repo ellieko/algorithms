@@ -8,11 +8,11 @@ return the level order traversal of its nodes' values.
 '''
 
 # Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 class Solution:
     # BFS (queue, first in first out)
     # time complexity: O(n) since each node is processed exactly once
