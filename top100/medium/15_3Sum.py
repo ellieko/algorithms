@@ -14,68 +14,85 @@ Output: [[-1,-1,2],[-1,0,1]]
 
 '''
 
-# nums_type: List[int]) -> return_type: List[List[int]]
+from typing import List
+
+
 class Solution:
 
+    # sort first and use two pointers w/o set
     # time complexity: O(n^2)
     # space complexity: O(n) due to sorting
-    def threeSum(self, nums):
+    def threeSum_v1(self, nums: List[int]) -> List[List[int]]:
         res = []
         nums.sort()
+
+        # fix the first index i
         for i in range(len(nums)-2):
-            if i > 0 and nums[i-1] == nums[i]:
-                continue
-            l, r = i+1, len(nums)-1
-            while l < r:
-                total = nums[i] + nums[l] + nums[r]
+            
+            # if we already consider this first value, pass
+            if i > 0 and nums[i-1] == nums[i]: continue
+                
+            # start with the fixed first element
+            j, k = i+1, len(nums)-1
+            while j < k:
+                total = nums[i] + nums[j] + nums[k]
                 if total < 0:
-                    l += 1
+                    j += 1
                 elif total > 0:
-                    r -= 1
+                    k -= 1
                 else:
-                    res.append((nums[i], nums[l], nums[r]))
-                    l += 1
-                    while nums[l] == nums[l-1] and l < r:
-                        l += 1  
+                    res.append((nums[i], nums[j], nums[k]))
+                    # still need to check other values 
+                    j += 1
+                    # but if new jth value is the same as the previous jth value,
+                    # we don't need to check because we have already checked
+                    while nums[j] == nums[j-1] and j < k:
+                        j +=1
+
         return res
 
-    # Sort first and use two pointers
-    # time complexty: O(N^2+NlogN) -> O(N^2)
-    # space complexity: O(N) because of python's sort built in function and hashset 
-    # return type is set of tuples because "the solution set must not contain duplicate triplets"
-    # but our algorithm will generate -1, 0, 1 twice if there is two -1
-    def threeSum_v1(self, nums):
-        nums.sort()
-        ans = set()
-        prev = None
-        l = len(nums)
-        for idx, num in enumerate(nums):
-            if prev == num:
-                continue
-            lo, hi = idx+1, l-1
-            while lo < hi:
-                if (nums[lo] + nums[hi]) < -num:
-                    lo += 1
-                elif (nums[lo] + nums[hi] > -num):
-                    hi -= 1
-                else:
-                    ans.add((nums[idx], nums[lo], nums[hi]))
-                    lo += 1
-                    hi -=1      # we change two pointers because it must not contain duplicate triplets
-            prev = num
-        return ans
-
-
-    # Same approach but using helper function
-    # time complexity: O(N^2)
-    # space complexity: O(N)
+    # sort first and use two pointers w/ set
+    # time complexity: O(n^2)
+    # space complexity: O(n) due to sorting
     def threeSum_v2(self, nums):
+        res = set()
+        nums.sort()
+
+        # fix the first index i
+        for i in range(len(nums)-2):
+            
+            # if we already consider this first value, pass
+            if i > 0 and nums[i-1] == nums[i]: continue
+                
+            # start with the fixed first element
+            j, k = i+1, len(nums)-1
+            while j < k:
+                total = nums[i] + nums[j] + nums[k]
+                if total < 0:
+                    j += 1
+                elif total > 0:
+                    k -= 1
+                else:
+                    res.add((nums[i], nums[j], nums[k]))
+                    # still need to check other values 
+                    j += 1
+                    k -= 1
+                    # but there may still have duplicates when these new jth and kth values are the same as the previous values of them
+                    # that's why we are using set for our res
+
+        return res
+
+
+    # same approach but using helper function
+    # time complexity: O(n^2)
+    # space complexity: O(n)
+    def threeSum_v3(self, nums):
         nums.sort()
         res = []
         for i in range(len(nums)):
             if nums[i] > 0:                     # because can't make its sum = 0 with positive number being the smallest
                 break
-            if i == 0 or nums[i-1] != nums[i]:  # make sure no duplicate, no first element that we already added
+            if i == 0 or nums[i-1] != nums[i]:  # make sure no duplicate, no first element that we already checked
                 self.twoSum_v2(nums, i, res)
         return res
 
@@ -109,17 +126,17 @@ class Solution:
             j +=1 
 
     
-    # w/o sort?????
-    # What if you cannot modify the input array, and you want to avoid copying it due to memory constraints?
-    # it's possible, though the efficiency would heavily depend on the input.
+    # w/o sort
+    # if you are not allowed to modify the input array, and you want to avoid copying it due to memory constraints?
+    # it's possible, though the efficiency would heavily depend on the input
     # If we have a very large array with many duplicates and a few matching triplets,
-    # the "No-Sort" approach would be more memory efficient
+    # the "no-sort" approach would be more memory efficient
 
     # e.g. [1,0,-2,1,2] --> [-2,0,1,1,2] ---> should return [[-2,0,2],[-2,1,1]]
 
-    # time complexity: O(N^2)
-    # space complexity: O(N)
-    def threeSum_v3(self, nums):
+    # time complexity: O(n^2)
+    # space complexity: O(n)
+    def threeSum_v4(self, nums):
         res = set()
         # having a target as -nums[i],
         # now we can find two elements whose sum is -nums[i], but three numbers should be something I haven't seen yet
@@ -135,18 +152,18 @@ class Solution:
                     seen.add(nums[j])
         return res
 
-    # an optimized version of threeSum_v3 (w/o sort)
+    # an optimized version of threeSum_v4 (w/o sort)
     # Instead of re-populating a hashset every time in the inner loop,
     # we can use a hashmap and populate it once.
     # Values in the hashmap will indicate whether we have encountered that element in the current iteration.
     # When we process nums[j] in the inner loop, we set its hashmap value to i.
     # This indicates that we can now use nums[j] as a complement for nums[i].
     # This is more like a trick to compensate for container overheads.
-    def threeSum_v3_optimized(self, nums):
+    def threeSum_v4_optimized(self, nums):
         res, dups = set(), set()
         seen = {}
         for i,val1 in enumerate(nums):
-            if val1 not in dups:        # if it's alreay in, we checked the sum, continue
+            if val1 not in dups:        # if it's in dups, it means we already checked the sum, continue
                 dups.add(val1)
                 for j,val2 in enumerate(nums[i+1:]):
                     complement = -val1-val2
