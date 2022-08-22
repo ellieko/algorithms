@@ -8,22 +8,24 @@ return an array answer such that answer[i] is equal to the product of all the el
 The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
 
 You must write an algorithm that runs in O(n) time and without using the division operation.
+
 '''
 
 class Solution:
+    # time complexity: O(n)
+    # space complexity: O(1)
     def productExceptSelf(self, nums):
-        # time complexity: O(n)
-        # space complexity: O(1)
         res = [1] * len(nums)
+        prefix = postfix =  1
 
-        prefix = 1
+        # prefix
         for i in range(len(nums)):
             res[i] = prefix
-            prefix *= nums[i]
+            prefix = prefix * nums[i]
         
-        postfix = 1
+        # postfix
         for i in range(len(nums)-1, -1, -1):
-            res[i] *= postfix
-            postfix *= nums[i]
+            res[i] = res[i] * postfix
+            postfix = postfix * nums[i]
 
         return res

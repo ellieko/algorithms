@@ -9,32 +9,40 @@ typically using all the original letters exactly once.
 
 '''
 
+from typing import List
+
+
 class Solution:
-    # my approach
-    def groupAnagrams(self, strs):
+
+    # 1) Hashmap with sort
+    # time complexity: O(m*nlogn)
+    # where n is the average length of each of the input strings (or maximum length of the input string)
+    # and m is the length of the input list
+
+    # space complexity: O(m*n)
+
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
         from collections import defaultdict
-        res = defaultdict(list)
-        for word in strs:
-            counter = defaultdict(int)
-            for c in word:
-                counter[c] += 1
-            res[tuple(sorted(counter.items()))].append(word)
-        return res.values()
+        d = defaultdict(list)
+        for s in strs:
+            d[tuple(sorted(s))].append(s)
+        return d.values()
     
-    # better approach where we don't need to sort
+
+    # 2) Better solution where we don't need to sort
     # instead of dictionary to keep track of each frequencies
     # we use list of ord values
-    # time complexity:
-    # space complexity:
-    def groupAnagrams_v2(self, strs):
 
-        # time complexity: O(nk)
-        # space complexity: O(nk)
-        # where n is length of strs and k is the maximum length of a string in strs
+    # time complexity: O(m*n*26) -> O(m*n)
+    # where n is the maximum length of the input string
+    # and m is the length of the input list
+
+    # space complexity: O(m*n)
+    def groupAnagrams_v2(self, strs):
         from collections import defaultdict
         ans = defaultdict(list)
         for s in strs:
-            count = [0]*26
+            count = [0]*26      # use the constraint that there will be at most 26 characters only
             for c in s:
                 count[ord(c)-ord('a')] += 1
             ans[tuple(count)].append(s)
