@@ -11,37 +11,39 @@ Return true if you can finish all courses. Otherwise, return false.
 
 '''
 
-class Solution:
-    # time comoplexity: O(V+P)
-    # space complexity: O(V+P)
+from typing import List
 
-    def canFinish(self, numCourses: int, prerequisites) -> bool:
-        
+
+class Solution:
+    # time complexity: O(v+e)
+    # space complexity: O(v+e)
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        # cannot use defaultdict(list),
+        # it gives RuntimeError: dictionaty chanced size during iteration
         # { course: a list of its prerequisites }
-        preMap = {i:[] for i in range(numCourses)}
+        adj = {i:[] for i in range(numCourses)}
+        
+        for crs, pre in prerequisites:
+            adj[crs].append(pre)
+            
         visited = set()
         
-        for crs,pre in prerequisites:
-            preMap[crs].append(pre)
-
         def dfs(crs):
-            if crs in visited:
+            if crs in visited:      # cycle detected
                 return False
-            if preMap[crs] == []:
+            if adj[crs] == []:
                 return True
-
+            
             visited.add(crs)
-            for pre in preMap[crs]:
-                if not dfs(pre):
-                    return False
+            for pre in adj[crs]:
+                if not dfs(pre): return False
             visited.remove(crs)
-            preMap[crs] = []
-            
+            adj[crs] = []
             return True
-        
-        for crs,pre in prerequisites:
-            if not dfs(crs):
-                return False
             
+        
+        for i in range(numCourses):
+            if not dfs(i): return False
+                
         return True
         

@@ -59,3 +59,8 @@ class WordDictionary:
             return parent.endOfWord
 
         return dfs(self.root, 0)
+
+# Your WordDictionary object will be instantiated and called as such:
+# obj = WordDictionary()
+# obj.addWord(word)
+# param_2 = obj.search(word)
