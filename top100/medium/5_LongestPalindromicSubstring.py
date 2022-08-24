@@ -1,13 +1,43 @@
 '''
+5. Longest Palindromic Substring
+https://leetcode.com/problems/longest-palindromic-substring/
 
 Given a string s, return the longest palindromic substring in s.
 
 '''
 
 class Solution:
+    
+    # time complexity: O(n^2)
+    # because expanding a palindrome around its center could take O(n) time
+
+    # space complexity: O(1)
+    def longestPalindrome(self, s: str) -> str:
+        start, end = 0, 0
+        
+        # center of our substring
+        for i in range(len(s)):
+            
+            # odd number of substring
+            l = r = i
+            while l >= 0 and r < len(s) and s[l] == s[r]:
+                if r - l + 1 > end - start + 1:
+                    start, end = l, r
+                l -= 1
+                r += 1
+            
+            # even number of substring
+            l, r = i, i + 1
+            while l >= 0 and r < len(s) and s[l] == s[r]:
+                if r - l + 1 > end - start + 1:
+                    start, end = l, r
+                l -= 1
+                r += 1
+                
+        return s[start:end+1]
 
     # Brute Force with O(n^3) -- Time Limit Exceeded
-    def longestPalindrome(self, s):
+    def longestPalindrome_v1(self, s):
         ans = s[0]
         hash = {}
 
@@ -31,27 +61,36 @@ class Solution:
             self.isPalindrome(s, (i+1, j-1), hash)
         hash[(i, j)] = True if hash[(i+1, j-1)] and s[i] == s[j] else False
 
-    # reference to review
-    # https://zkf85.github.io/2019/03/26/leetcode-005-longest-palindrome#solution
 
-    # Improve the solution above (Approach 4. Expand Around Center - O(n^2))
-    def longestPalindrome_v4(self, s):
-        start = end = 0
-        for i in range(len(s)):
-            c1 = self.expendAroundCenter(s, i, i)
-            c2 = self.expendAroundCenter(s, i, i+1)
-            longer = max(c1, c2)
-            if end - start < longer:
-                start = i - (longer - 1) // 2
-                end = i + longer // 2
-        return s[start:end+1]
+    # A palindrome is a word, number, phrase, or other sequence of characters
+    # which reads the same backward as forward
+    # Improve the solution above (Approach 4. Expand Around Center)
+    # time complexity: O(n^2)
+    # space complexity: O(1)
+    def longestPalindrome_v2(self, s):
+        n = len(s)
+        res, res_length = "", 0
 
-    def expendAroundCenter(self, s, left, right):
-        l, r, length = left, right, len(s)
-        while (0 <= l and r < length and s[l] == s[r]):
-            l -= 1
-            r += 1
-        return r - l - 1
+        for i in range(n):
+            # odd length palindrome
+            l, r = i, i
+            while l >= 0 and r < n and s[l] == s[r]:
+                if r-l+1 > res_length:
+                    res_length = r-l+1
+                    res = s[l:r+1]
+                l -= 1
+                r += 1
+
+            # even length palindrome
+            l, r = i, i+1
+            while l >= 0 and r < n and s[l] == s[r]:
+                if r-l+1 > res_length:
+                    res_length = r-l+1
+                    res = s[l:r+1]
+                l -= 1
+                r += 1
+
+        return res
 
 
 if __name__ == '__main__':

@@ -1,4 +1,6 @@
 '''
+22. Generate Parentheses
+https://leetcode.com/problems/generate-parentheses/
 
 Given n pairs of parentheses,
 write a function to generate all combinations of well-formed parentheses.
@@ -12,8 +14,6 @@ Input: n = 1
 Output: ["()"]
 
 '''
-
-from itertools import combinations
 
 
 class Solution:
@@ -52,22 +52,23 @@ class Solution:
 
     # Backtracking - add parens only when we know it will remain a valid sequence
     # By keeping track of the number of opening and closing brackets we have placed so far
-    # Time Complexity: 
+    # time complexity: ... 
+    # space complexity: ...
     def generateParenthesis_v2(self, n):
-
-        def backtrack(sofar = [], open = 0, close = 0):
-            if len(sofar) == n*2:
-                combinations.append("".join(sofar))
+        res = []
+        
+        def backtrack(curr, openCount, closedCount):
+            if openCount == n and closedCount == n:
+                res.append(curr)
                 return
-            else:
-                if open < n:
-                    backtrack(sofar + ['('], open+1, close)
-                if close < open:
-                    backtrack(sofar + [')'], open, close+1)
-
-        combinations = [] 
-        backtrack()
-        return combinations
+            
+            if openCount < n:
+                backtrack(curr + '(', openCount + 1, closedCount)
+            if closedCount < openCount:
+                backtrack(curr + ')', openCount, closedCount + 1)
+        
+        backtrack("", 0, 0)
+        return res
 
 
 if __name__ == '__main__':
