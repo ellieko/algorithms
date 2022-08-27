@@ -2,8 +2,6 @@
 675. Cut Off Trees for Golf Event
 https://leetcode.com/problems/cut-off-trees-for-golf-event/
 
-https://leetcode.com/problems/cut-off-trees-for-golf-event/discuss/107396/Python-solution-based-on-wufangjie's-(Hadlock's-algorithm)
-
 '''
 
 from typing import List
@@ -21,6 +19,72 @@ class Solution:
     # i thought it should return -1 but what it's supposed to return is 11
     # by choosing not cutting off trees in the first time they visit the node...
     # let's finish up the question later
+
+    # 33/55 test cases passed... Rest: TLE
+    def cutOffTree(self, forest: List[List[int]]) -> int:
+        m, n = len(forest), len(forest[0])
+        sorted_array = [c for row in forest for c in row]
+        for i in range(m):
+            if set(forest[i]) == {0}:
+                return -1
+            
+        sorted_array.sort()
+        print(sorted_array)
+
+        # (r, c): current position
+        # (x, y): target position
+        # can we get there?
+        # if so, how many steps?
+        def bfs(r, c, x, y) -> int:
+            res = 0
+
+            visited = set()
+            q = deque([(r, c)])
+            while q:
+                for i in range(len(q)):
+                    curR, curC = q.popleft()
+                    visited.add((curR, curC))
+                    if curR == x and curC == y:
+                        return res
+                    for changeR, changeC in (0, 1), (0, -1), (1, 0), (-1, 0):
+                        newR, newC = curR + changeR, curC + changeC
+                        if (newR < 0 or newC < 0 or newR >= m or newC >= n or
+                            (newR, newC) in visited or forest[newR][newC] == 0):
+                            continue
+                        q.append((newR, newC))   
+                    # when i'm supposed to increment and decrement res...
+                    # currently even if i failed to find the steps, still step is added...
+                res +=1
+
+            return -1
+
+        r = c = steps = 0
+        for idx in range(len(sorted_array)):
+            if sorted_array[idx] > 0:
+                x = y = 0
+                for i, row in enumerate(forest):
+                    if sorted_array[idx] in row:
+                        x, y = i, row.index(sorted_array[idx])
+                        print(f"FOUND X and Y = {x} and {y}")
+                        break
+
+                # check if we can reach to from (r, c) to (x, y)
+                # print(f"(r, c) = {(r, c)} and (x, y) = {(x, y)}")
+                if (r, c) == (x, y):
+                    continue 
+
+                res = bfs(r, c, x, y)
+                if res == -1:
+                    return -1
+                print(f"res = {res}")
+                steps += res
+                print(f"steps = {steps}")
+                r, c = x, y
+                
+        return steps
+
+
+               
 
     # 21 / 55 test cases passed.
     def cutOffTree_bfs(self, forest: List[List[int]]) -> int:
@@ -75,3 +139,7 @@ class Solution:
             for j in range(n):
                 if forest[i][j] not in (0, 1):
                     return -1
+
+if __name__ == '__main__':
+    l = [[1,7,6],[0,0,5],[2,3,4]]
+    print(Solution().cutOffTree(l))

@@ -38,7 +38,7 @@ class Solution:
     def getIntersectionNode_v2(self, headA, headB):
         p1, p2 = headA, headB
         while p1 != p2:
-            p1 = headB if p1 == None else p1.next
-            p2 = headA if p2 == None else p2.next
+            p1 = p1.next if p1 else headB
+            p2 = p2.next if p2 else headA
         return p1
     
