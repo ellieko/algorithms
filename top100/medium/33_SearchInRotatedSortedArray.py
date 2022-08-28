@@ -85,7 +85,41 @@ class Solution:
                     lo = mid + 1
         return -1
 
+    
     def search_v1(self, nums, target):
+        '''
+        two binary search
+        one for finding a pivot index and the another for searching target
+
+        elem = nums[0]
+        l, r = 0, len(nums)-1
+        while l <= r:
+            mid = (l+r) // 2
+            if nums[mid] < elem:
+                r = mid - 1
+            elif nums[mid] > elem:
+                l = mid + 1
+            else:
+                break
+
+        # mid: pivot index
+        if target > elem:
+            l, r = 0, mid
+        else:
+            l, r = mid + 1, len(nums) - 1
+
+        while l <= r:
+            mid = (l+r)//2
+            if nums[mid] < target:
+                l = mid + 1
+            elif nums[mid] > target:
+                r = mid - 1
+            else:
+                return mid
+        return -1
+        '''
+
+    def search_v2(self, nums, target):
         
         idx = 0 
         while idx < len(nums)-1 and nums[idx] < nums[idx+1]:
@@ -117,7 +151,7 @@ class Solution:
     # find rotation_index and if nums[0] < target: search(rotation_index, len(nums)-1)
     #                         else:                search(0, rotation_index)
 
-    def search_v2(self, nums, target):
+    def search_v3(self, nums, target):
         def find_rotation_index(left, right):
             if nums[left] < nums[right]:
                 return 0

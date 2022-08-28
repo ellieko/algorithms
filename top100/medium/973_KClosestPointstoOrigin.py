@@ -36,4 +36,28 @@ class Solution:
 
     # divide and conqueer
     # quickselect (using the fact that the k elements returned can be in any order)
-    # time complexity: O(N) in average case and O(N^2) in the worst case
+    # time complexity: O(N) in average case and O(N^2) in the worst case -- TLE
+    def kClosest_v3(self, points: List[List[int]], k: int) -> List[List[int]]:
+        for i in range(len(points)):
+            dist = points[i][0]**2 + points[i][1]**2
+            points[i] = (dist, points[i][0], points[i][1])
+
+        res = []
+        
+        def quickSelect(l, r):
+            if l > r: return
+            p = l
+            for i in range(l, r):
+                if points[i][0] <= points[r][0]:
+                    points[i], points[p] = points[p], points[i]
+                    p += 1
+            points[r], points[p] = points[p], points[r]
+            if p < k:
+                quickSelect(p + 1, r)
+            else:
+                quickSelect(l, p - 1)
+        
+        quickSelect(0, len(points)-1)
+        
+        return [(x,y) for _, x, y in points[:k]]
+        

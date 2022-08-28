@@ -18,6 +18,7 @@ class Solution:
     # quickselect
     # average time complexity: O(n)
     # worst time complexity: O(n^2)
+    # space complexity: O(1)
     def findKthLargest(self, nums, k: int) -> int:
         k = len(nums) - k       # index for return value from sorted list
 
@@ -44,14 +45,17 @@ class Solution:
             
         for i in range(len(h)):
             res.append(-heapq.heappop(h))
-        return res[k-1]
+        return res[k-1] 
 
     # heap
-    # time complexity: O(nlogn)
+    # time complexity: O((n-k)logn) k: 1...n -> O(nlogn)
     # space complexity: O(n)
     def findKthLargest_v2(self, nums, k: int) -> int:
-        heapq.heapify(nums)
+        heapq.heapify(nums)         
         for i in range(len(nums)-k):
             heapq.heappop(nums)
         return heapq.heappop(nums)
 
+    # also, return heapq.nlargest(k, nums)[-1]
+    # heapq.nlargest: return sorted list of the length k
+    # return sorted list in descending order until kth largest
